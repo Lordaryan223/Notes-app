@@ -1,4 +1,3 @@
-
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,12 +7,6 @@ export default function Home() {
 
   const fetchNotes = async () => {
     const res = await fetch("/api/notes");
-  
-    if (!res.ok) {
-      console.error("API Error");
-      return;
-    }
-  
     const data = await res.json();
     setNotes(data);
   };
@@ -30,39 +23,50 @@ export default function Home() {
     fetchNotes();
   }, []);
 
-  return  (
-    <div className="max-w-3xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Notes App</h1>
-  
-        <Link
-          href="/add"
-          className="text-blue-600 underline font-medium"
-        >
-          ➕ Add New Note
-        </Link>
-      </div>
-  
-      {notes.length === 0 && (
-        <p className="text-gray-500">No notes yet.</p>
-      )}
-  
-      {notes.map(note => (
-        <div
-          key={note._id}
-          className="border rounded p-4 mb-4 shadow-sm"
-        >
-          <h2 className="font-semibold text-xl">{note.title}</h2>
-          <p className="mt-2">{note.content}</p>
-  
-          <button
-            onClick={() => deleteNote(note._id)}
-            className="mt-3 text-red-600 text-sm"
+  return (
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 p-6">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-extrabold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Notes App
+          </h1>
+
+          <Link
+            href="/add"
+            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
-            Delete
-          </button>
+            ➕ Add Note
+          </Link>
         </div>
-      ))}
+
+        {notes.length === 0 && <p>No notes yet.</p>}
+
+        {notes.map(note => (
+          <div
+            key={note._id}
+            className="bg-white rounded-xl p-5 mb-4 shadow hover:shadow-xl transition"
+          >
+            <h2 className="text-xl font-semibold">{note.title}</h2>
+            <p className="mt-2">{note.content}</p>
+
+            <div className="flex gap-4 mt-4">
+              <Link
+                href={`/edit/${note._id}`}
+                className="text-blue-600 text-sm"
+              >
+                Edit
+              </Link>
+
+              <button
+                onClick={() => deleteNote(note._id)}
+                className="text-red-600 text-sm"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
