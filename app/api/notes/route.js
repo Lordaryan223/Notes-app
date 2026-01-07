@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import { connectDB } from "@/lib/mongodb";
 import Note from "@/models/Note";
 import { NextResponse } from "next/server";
